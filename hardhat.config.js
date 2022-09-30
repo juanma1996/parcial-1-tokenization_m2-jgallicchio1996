@@ -14,7 +14,7 @@ module.exports = {
     cache: "./cache",
     artifacts: "./artifacts"
   },
-  /*networks: {
+  networks: {
     ganache: {
       chainId: 1337,
       url: process.env.GANACHE_ACCESSPOINT_URL,
@@ -32,5 +32,5 @@ module.exports = {
         from:     process.env.RINKEBY_ACCOUNT,
         accounts: [process.env.RINKEBY_PRIVATE_KEY]
 	  }
-  }*/
+  }
 };

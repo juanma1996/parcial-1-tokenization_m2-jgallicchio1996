@@ -1,6 +1,8 @@
 //SPDX-License-Identifier: MIT
 pragma solidity 0.8.16;
 
+import "./NFT_Floor.sol";
+
 /// @notice This contact partially follows the standard for ERC-20 fungible tokens.
 /// Each token represents an indivisible square meter
 /// @dev Comment follow the Ethereum ´Natural Specification´ language format (´natspec´)
@@ -22,10 +24,11 @@ contract ERC20_M2 {
     /// @dev Throw if `_nftContract` is the zero address, message: "Invalid address".
     /// @param _nftContract It is the NFT_Floor contract address
     constructor(address _nftContract) {
-        // TODO: Implement method
+        _isZeroAddress(_nftContract, "Invalid address");
         name = "ERC20_M2";
         symbol = "M2";
         decimals = 0;
+        nftContract = _nftContract;
     }
 
     /**
@@ -38,7 +41,12 @@ contract ERC20_M2 {
      * @param _m2 It is the amount of tokens to transfer.
      */
     function transfer(address _to, uint256 _m2) external {
-        // TODO: Implement method
+        _isZeroAddress(_to, "Invalid '_to' address");
+        _isSenderAccount(msg.sender, _to, "Invalid recipient, same as remittent");
+        _isZeroAmount(_m2, "Invalid _m2");
+        _hasSufficientBalance(msg.sender, _m2);
+        balanceOf[msg.sender] -= _m2;
+        balanceOf[_to] += _m2;
     }
 
     /**
@@ -50,7 +58,13 @@ contract ERC20_M2 {
      * @param _m2 It is the amount of tokens to mint
      */
     function mint(address _recipient, uint256 _m2) external {
-        // TODO: Implement method
+        _isZeroAmount(_m2, "Invalid quantity");
+        _isZeroAddress(_recipient, "Invalid _recipient address");
+        if (msg.sender != nftContract) {
+            revert("Not authorized");
+        }
+        totalSupply += _m2;
+        balanceOf[_recipient] += _m2;
     }
 
     /**
@@ -60,6 +74,38 @@ contract ERC20_M2 {
      * @param _quantity It is the number of tokens to assemble
      */
     function assemble(uint256 _quantity) external {
-        // TODO: Implement method
+        _isZeroAmount(_quantity, "Invalid quantity");
+        _hasSufficientBalance(msg.sender, _quantity);
+        NFT_Floor(nftContract).mint(msg.sender, _quantity);
+        balanceOf[msg.sender] -= _quantity;
+        totalSupply -= _quantity;
+    }
+
+    /// -----------------------------------------------------------------------------------------------------------------
+    /// PRIVATE FUNCTIONS
+    /// -----------------------------------------------------------------------------------------------------------------
+
+    function _isZeroAddress(address _address, string memory _errorMessage) private pure {
+        if (_address == address(0)) {
+            revert(_errorMessage);
+        }
+    }
+
+    function _isSenderAccount(address _sender, address _address,string memory _errorMessage) private pure {
+        if (_sender == _address) {
+            revert(_errorMessage);
+        }
+    }
+
+    function _isZeroAmount(uint256 _value, string memory _errorMessage) private pure {
+        if (_value == 0) {
+            revert(_errorMessage);
+        }
+    }
+
+    function _hasSufficientBalance(address _address, uint256 _value) private view {
+        if (balanceOf[_address] < _value) {
+            revert("Insufficient balance");
+        }
     }
 }

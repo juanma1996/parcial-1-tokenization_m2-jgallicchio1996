@@ -6,14 +6,14 @@
 1. Clonar el repositorio
 
 2. Complete sus datos:
-  * NUMERO DE ESTUDIANTE:
-  * NOMBRE DE ESTUDIANTE:
-  * ADDRESS DE SU CUENTA:
-  * ADDRESS DEL CONTRATO:
+  * NUMERO DE ESTUDIANTE: 233335
+  * NOMBRE DE ESTUDIANTE: Juan Manuel Gallicchio Antelo
+  * ADDRESS DE SU CUENTA: 0x8fB32163b178984e8f1b204f5527DE8A9D1bEBB8
+  * ADDRESS DEL CONTRATO: Contract ERC721 Address: 0x05587A493eD8cb29CFA54E521Cc7d231c2276812 -- Contract ERC720 Address: 0x94B30c21E90c49d539c024A5d6bf8d06e392BE78
 
 3. Complete las siguientes variables en el archivo .env:
-  * STUDENT_NUMBER = 
-  * STUDENT_ADDRESS = 
+  * STUDENT_NUMBER = 233335
+  * STUDENT_ADDRESS = 0x8fB32163b178984e8f1b204f5527DE8A9D1bEBB8
 
 4. Installar hardhat `npm install hardhat --save-dev`
 
